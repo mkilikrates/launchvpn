@@ -1,4 +1,4 @@
-{% if tnum == 0 %}
+{% if tnum == 1 %}
 router bgp {{ cgw_bgp_asn }}
 {% endif %}
  neighbor {{ vgw_in_addr }} remote-as {{ vgw_bgp_asn }}
