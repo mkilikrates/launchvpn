@@ -88,7 +88,7 @@ for tun in tunnels:
 #        ipsec_authentication_protocol = '_'.join(ipsec_authentication_protocol.split('-')[:2]),
 #        ipsec_lifetime = ipsec_lifetime
 #    ))
-    sys.stdout = open('racoon.conf.txt', 'w') as racoon:
+    sys.stdout = open('racoon.conf.txt', 'w')
     print('\n#\n# racoon.conf - {0} tunnel {1}\n#'.format(profile.title(), tnum))
     print(templaterac.render(
     vgw_out_addr = vgw_out_addr,
