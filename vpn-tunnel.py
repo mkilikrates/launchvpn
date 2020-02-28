@@ -111,6 +111,7 @@ for tun in tunnels:
     print('#tunnel#{0}\n'.format(tnum))
     print(templatefsw.render(
     tnum = tnum,
+    cgw_out_addr = cgw_out_addr,
     vgw_out_addr = vgw_out_addr,
     cgw_in_addr = cgw_in_addr,
     cgw_in_cidr = cgw_in_cidr,
