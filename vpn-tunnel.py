@@ -61,13 +61,13 @@ for tun in tunnels:
 #    print('\n#\n# psk.txt - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key))
     sys.stdout = open('psk.txt', 'w+')
-        print('\n#\n# psk.txt - {0} tunnel {1}\n#'.format(profile.title(), tnum))
-        print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key))
+    print('\n#\n# psk.txt - {0} tunnel {1}\n#'.format(profile.title(), tnum))
+    print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key))
 #    print('\n#\n# ipsec.secrets - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key))
     sys.stdout = open('ipsec.secrets.txt', 'w+')
-        print('\n#\n# ipsec.secrets - {0} tunnel {1}\n#'.format(profile.title(), tnum))
-        print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key))
+    print('\n#\n# ipsec.secrets - {0} tunnel {1}\n#'.format(profile.title(), tnum))
+    print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key))
 #    print('\n#\n# racoon.conf - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print(templaterac.render(
 #        vgw_out_addr = vgw_out_addr,
@@ -89,25 +89,25 @@ for tun in tunnels:
 #        ipsec_lifetime = ipsec_lifetime
 #    ))
     sys.stdout = open('racoon.conf.txt', 'w') as racoon:
-        print('\n#\n# racoon.conf - {0} tunnel {1}\n#'.format(profile.title(), tnum))
-        print(templaterac.render(
-            vgw_out_addr = vgw_out_addr,
-            ike_mode = ike_mode,
-            ike_lifetime = ike_lifetime,
-            ike_encryption_protocol = ike_encryption_protocol,
-            ike_authentication_protocol = ike_authentication_protocol,
-            ike_perfect_forward_secrecy = ike_perfect_forward_secrecy,
-            dpd_delay = dpd_delay,
-            dpd_retry = dpd_retry,
-            cgw_in_addr = cgw_in_addr,
-            cgw_in_cidr = cgw_in_cidr,
-            vgw_in_addr = vgw_in_addr,
-            vgw_in_cidr = vgw_in_cidr,
-            cgw_out_addr = cgw_out_addr,
-            ipsec_perfect_forward_secrecy = ipsec_perfect_forward_secrecy,
-            ipsec_encryption_protocol = ipsec_encryption_protocol,
-            ipsec_authentication_protocol = '_'.join(ipsec_authentication_protocol.split('-')[:2]),
-            ipsec_lifetime = ipsec_lifetime
+    print('\n#\n# racoon.conf - {0} tunnel {1}\n#'.format(profile.title(), tnum))
+    print(templaterac.render(
+    vgw_out_addr = vgw_out_addr,
+    ike_mode = ike_mode,
+    ike_lifetime = ike_lifetime,
+    ike_encryption_protocol = ike_encryption_protocol,
+    ike_authentication_protocol = ike_authentication_protocol,
+    ike_perfect_forward_secrecy = ike_perfect_forward_secrecy,
+    dpd_delay = dpd_delay,
+    dpd_retry = dpd_retry,
+    cgw_in_addr = cgw_in_addr,
+    cgw_in_cidr = cgw_in_cidr,
+    vgw_in_addr = vgw_in_addr,
+    vgw_in_cidr = vgw_in_cidr,
+    cgw_out_addr = cgw_out_addr,
+    ipsec_perfect_forward_secrecy = ipsec_perfect_forward_secrecy,
+    ipsec_encryption_protocol = ipsec_encryption_protocol,
+    ipsec_authentication_protocol = '_'.join(ipsec_authentication_protocol.split('-')[:2]),
+    ipsec_lifetime = ipsec_lifetime
         ))
 #    print('\n#\n# ipsec.conf/freswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print(templateips.render(
@@ -119,14 +119,14 @@ for tun in tunnels:
 #        vgw_out_addr = vgw_out_addr
 #    ))
     sys.stdout = open('ipsec.conf.txt', 'w+')
-        print('\n#\n# ipsec.conf/freswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
-        print(templateips.render(
-            cgw_in_addr = cgw_in_addr,
-            cgw_in_cidr = cgw_in_cidr,
-            vgw_in_addr = vgw_in_addr,
-            vgw_in_cidr = vgw_in_cidr,
-            cgw_out_addr = cgw_out_addr,
-            vgw_out_addr = vgw_out_addr
+    print('\n#\n# ipsec.conf/freswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
+    print(templateips.render(
+    cgw_in_addr = cgw_in_addr,
+    cgw_in_cidr = cgw_in_cidr,
+    vgw_in_addr = vgw_in_addr,
+    vgw_in_cidr = vgw_in_cidr,
+    cgw_out_addr = cgw_out_addr,
+    vgw_out_addr = vgw_out_addr
         ))
 #    print('\n#\n# ipsec.conf/strongswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print(templatefsw.render(
@@ -146,22 +146,22 @@ for tun in tunnels:
 #        dpdtimeout = int(dpd_retry)*int(dpd_delay)
 #    ))
     sys.stdout = open('ipsec_conf.txt', 'w+')
-        print('\n#\n# ipsec.conf/strongswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
-        print(templatefsw.render(
-            tnum = tnum,
-            vgw_out_addr = vgw_out_addr,
-            cgw_in_addr = cgw_in_addr,
-            cgw_in_cidr = cgw_in_cidr,
-            vgw_in_addr = vgw_in_addr,
-            vgw_in_cidr = vgw_in_cidr,
-            ike_encryption_protocol = ike_encryption_protocol,
-            ike_authentication_protocol = ike_authentication_protocol,
-            ike_lifetime = int(ike_lifetime)/3600,
-            ipsec_encryption_protocol = ipsec_encryption_protocol,
-            ipsec_authentication_protocol = (ipsec_authentication_protocol.split('-')[1]),
-            ipsec_lifetime = int(ipsec_lifetime)/3600,
-            dpd_delay = int(dpd_delay),
-            dpdtimeout = int(dpd_retry)*int(dpd_delay)
+    print('\n#\n# ipsec.conf/strongswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
+    print(templatefsw.render(
+    tnum = tnum,
+    vgw_out_addr = vgw_out_addr,
+    cgw_in_addr = cgw_in_addr,
+    cgw_in_cidr = cgw_in_cidr,
+    vgw_in_addr = vgw_in_addr,
+    vgw_in_cidr = vgw_in_cidr,
+    ike_encryption_protocol = ike_encryption_protocol,
+    ike_authentication_protocol = ike_authentication_protocol,
+    ike_lifetime = int(ike_lifetime)/3600,
+    ipsec_encryption_protocol = ipsec_encryption_protocol,
+    ipsec_authentication_protocol = (ipsec_authentication_protocol.split('-')[1]),
+    ipsec_lifetime = int(ipsec_lifetime)/3600,
+    dpd_delay = int(dpd_delay),
+    dpdtimeout = int(dpd_retry)*int(dpd_delay)
         ))
 #    print('\n#\n# bgpd.conf/quagga - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print(templatequa.render(
@@ -171,12 +171,12 @@ for tun in tunnels:
 #        vgw_bgp_asn = vgw_bgp_asn
 #    ))
     sys.stdout = open('bgpd.conf.txt', 'w+')
-        print('\n#\n# bgpd.conf/quagga - {0} tunnel {1}\n#'.format(profile.title(), tnum))
-        print(templatequa.render(
-            tnum = tnum,
-            cgw_bgp_asn = cgw_bgp_asn,
-            vgw_in_addr = vgw_in_addr,
-            vgw_bgp_asn = vgw_bgp_asn
+    print('\n#\n# bgpd.conf/quagga - {0} tunnel {1}\n#'.format(profile.title(), tnum))
+    print(templatequa.render(
+    tnum = tnum,
+    cgw_bgp_asn = cgw_bgp_asn,
+    vgw_in_addr = vgw_in_addr,
+    vgw_bgp_asn = vgw_bgp_asn
         ))
     print('\n')
     tnum += 1
