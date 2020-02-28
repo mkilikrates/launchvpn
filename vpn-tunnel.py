@@ -25,15 +25,15 @@ with open('ipsec_conf_fsw.tmpl') as f:
 with open('bgpd_conf.tmpl') as f:
     bgpd_conf = f.read()
 sys.stdout = open('psk.txt', 'w')
-print('\n#\n# psk.txt\n#')
+print('\n#\n# psk.txt\n')
 sys.stdout = open('ipsec.secrets.txt', 'w')
-print('\n#\n# ipsec.secrets\n#')
+print('\n#\n# ipsec.secrets\n')
 sys.stdout = open('racoon.conf.txt', 'w')
-print('\n#\n# racoon.conf\n#')
+print('\n#\n# racoon.conf\n')
 sys.stdout = open('ipsec.conf.txt', 'w')
-print('\n#\n# ipsec.conf/freswan\n#')
+print('\n#\n# ipsec.conf/freswan\n')
 sys.stdout = open('ipsec_conf.txt', 'w')
-print('\n#\n# ipsec.conf/strongswan\n#')
+print('\n#\n# ipsec.conf/strongswan\n')
 sys.stdout = open('bgpd.conf.txt', 'w')
 print('\n!\n! bgpd.conf/quagga\n')
 
@@ -71,13 +71,13 @@ for tun in tunnels:
     dpd_delay = tun['ipsec']['dead_peer_detection']['interval']
     dpd_retry = tun['ipsec']['dead_peer_detection']['retries']
     sys.stdout = open('psk.txt', 'a')
-    print('\ntunnel#{0}\n'.format(tnum))
+    print('\n#tunnel#{0}\n'.format(tnum))
     print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key))
     sys.stdout = open('ipsec.secrets.txt', 'a')
-    print('tunnel#{0}\n'.format(tnum))
+    print('#tunnel#{0}\n'.format(tnum))
     print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key))
     sys.stdout = open('racoon.conf.txt', 'a')
-    print('tunnel#{0}\n'.format(tnum))
+    print('#tunnel#{0}\n'.format(tnum))
     print(templaterac.render(
     vgw_out_addr = vgw_out_addr,
     ike_mode = ike_mode,
@@ -98,7 +98,7 @@ for tun in tunnels:
     ipsec_lifetime = ipsec_lifetime
         ))
     sys.stdout = open('ipsec.conf.txt', 'a')
-    print('tunnel#{0}\n'.format(tnum))
+    print('#tunnel#{0}\n'.format(tnum))
     print(templateips.render(
     cgw_in_addr = cgw_in_addr,
     cgw_in_cidr = cgw_in_cidr,
@@ -108,7 +108,7 @@ for tun in tunnels:
     vgw_out_addr = vgw_out_addr
         ))
     sys.stdout = open('ipsec_conf.txt', 'a')
-    print('tunnel#{0}\n'.format(tnum))
+    print('#tunnel#{0}\n'.format(tnum))
     print(templatefsw.render(
     tnum = tnum,
     vgw_out_addr = vgw_out_addr,
