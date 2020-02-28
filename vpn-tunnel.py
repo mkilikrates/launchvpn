@@ -61,14 +61,14 @@ for tun in tunnels:
 #    print('\n#\n# psk.txt - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key))
     with open('psk.txt', 'w') as o:
-        print('\n#\n# psk.txt - {0} tunnel {1}\n#'.format(profile.title(), tnum), file=o)
-        print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key), file=o)
+        print('\n#\n# psk.txt - {0} tunnel {1}\n#'.format(profile.title(), tnum), file = o)
+        print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key), file = o)
     o.close()
 #    print('\n#\n# ipsec.secrets - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key))
     with open('ipsec.secrets.txt', 'w') as o:
-        print('\n#\n# ipsec.secrets - {0} tunnel {1}\n#'.format(profile.title(), tnum), file=o)
-        print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key), file=o)
+        print('\n#\n# ipsec.secrets - {0} tunnel {1}\n#'.format(profile.title(), tnum), file = o)
+        print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key), file = o)
     o.close()
 #    print('\n#\n# racoon.conf - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print(templaterac.render(
@@ -91,7 +91,7 @@ for tun in tunnels:
 #        ipsec_lifetime = ipsec_lifetime
 #    ))
     with open('racoon.conf.txt', 'w') as racoon:
-        print('\n#\n# racoon.conf - {0} tunnel {1}\n#'.format(profile.title(), tnum), file=o)
+        print('\n#\n# racoon.conf - {0} tunnel {1}\n#'.format(profile.title(), tnum), file = o)
         print(templaterac.render(
             vgw_out_addr = vgw_out_addr,
             ike_mode = ike_mode,
@@ -110,7 +110,7 @@ for tun in tunnels:
             ipsec_encryption_protocol = ipsec_encryption_protocol,
             ipsec_authentication_protocol = '_'.join(ipsec_authentication_protocol.split('-')[:2]),
             ipsec_lifetime = ipsec_lifetime
-        ), file=o)
+        ), file = o)
     o.close()
 #    print('\n#\n# ipsec.conf/freswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print(templateips.render(
@@ -122,7 +122,7 @@ for tun in tunnels:
 #        vgw_out_addr = vgw_out_addr
 #    ))
     with open('ipsec.conf.txt', 'w') as o:
-        print('\n#\n# ipsec.conf/freswan - {0} tunnel {1}\n#'.format(profile.title(), tnum), file=o)
+        print('\n#\n# ipsec.conf/freswan - {0} tunnel {1}\n#'.format(profile.title(), tnum), file = o)
         print(templateips.render(
             cgw_in_addr = cgw_in_addr,
             cgw_in_cidr = cgw_in_cidr,
@@ -130,7 +130,7 @@ for tun in tunnels:
             vgw_in_cidr = vgw_in_cidr,
             cgw_out_addr = cgw_out_addr,
             vgw_out_addr = vgw_out_addr
-        ), file=o)
+        ), file = o)
     o.close()
 #    print('\n#\n# ipsec.conf/strongswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print(templatefsw.render(
@@ -150,7 +150,7 @@ for tun in tunnels:
 #        dpdtimeout = int(dpd_retry)*int(dpd_delay)
 #    ))
     with open('ipsec_conf.txt', 'w') as o:
-        print('\n#\n# ipsec.conf/strongswan - {0} tunnel {1}\n#'.format(profile.title(), tnum), file=o)
+        print('\n#\n# ipsec.conf/strongswan - {0} tunnel {1}\n#'.format(profile.title(), tnum), file = o)
         print(templatefsw.render(
             tnum = tnum,
             vgw_out_addr = vgw_out_addr,
@@ -166,7 +166,7 @@ for tun in tunnels:
             ipsec_lifetime = int(ipsec_lifetime)/3600,
             dpd_delay = int(dpd_delay),
             dpdtimeout = int(dpd_retry)*int(dpd_delay)
-        ), file=o)
+        ), file = o)
     o.close()
 #    print('\n#\n# bgpd.conf/quagga - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print(templatequa.render(
@@ -176,13 +176,13 @@ for tun in tunnels:
 #        vgw_bgp_asn = vgw_bgp_asn
 #    ))
     with open('bgpd.conf.txt', 'w') as o:
-        print('\n#\n# bgpd.conf/quagga - {0} tunnel {1}\n#'.format(profile.title(), tnum), file=o)
+        print('\n#\n# bgpd.conf/quagga - {0} tunnel {1}\n#'.format(profile.title(), tnum), file = o)
         print(templatequa.render(
             tnum = tnum,
             cgw_bgp_asn = cgw_bgp_asn,
             vgw_in_addr = vgw_in_addr,
             vgw_bgp_asn = vgw_bgp_asn
-        ), file=o)
+        ), file = o)
     o.close()
     print('\n')
     tnum += 1
