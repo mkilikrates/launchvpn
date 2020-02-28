@@ -110,6 +110,7 @@ for tun in tunnels:
     ))
     print('\n#\n# bgpd.conf/quagga - {0} tunnel {1}\n#'.format(profile.title(), tnum))
     print(templatequa.render(
+        tnum = tnum,
         cgw_bgp_asn = cgw_bgp_asn,
         vgw_in_addr = vgw_in_addr,
         vgw_bgp_asn = vgw_bgp_asn
