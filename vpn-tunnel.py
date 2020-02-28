@@ -60,12 +60,12 @@ for tun in tunnels:
     dpd_retry = tun['ipsec']['dead_peer_detection']['retries']
 #    print('\n#\n# psk.txt - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key))
-    sys.stdout = open('psk.txt', 'w+')
+    sys.stdout = open('psk.txt', 'a')
     print('\n#\n# psk.txt - {0} tunnel {1}\n#'.format(profile.title(), tnum))
     print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key))
 #    print('\n#\n# ipsec.secrets - {0} tunnel {1}\n#'.format(profile.title(), tnum))
 #    print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key))
-    sys.stdout = open('ipsec.secrets.txt', 'w+')
+    sys.stdout = open('ipsec.secrets.txt', 'a')
     print('\n#\n# ipsec.secrets - {0} tunnel {1}\n#'.format(profile.title(), tnum))
     print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key))
 #    print('\n#\n# racoon.conf - {0} tunnel {1}\n#'.format(profile.title(), tnum))
@@ -88,7 +88,7 @@ for tun in tunnels:
 #        ipsec_authentication_protocol = '_'.join(ipsec_authentication_protocol.split('-')[:2]),
 #        ipsec_lifetime = ipsec_lifetime
 #    ))
-    sys.stdout = open('racoon.conf.txt', 'w')
+    sys.stdout = open('racoon.conf.txt', 'a')
     print('\n#\n# racoon.conf - {0} tunnel {1}\n#'.format(profile.title(), tnum))
     print(templaterac.render(
     vgw_out_addr = vgw_out_addr,
@@ -118,7 +118,7 @@ for tun in tunnels:
 #        cgw_out_addr = cgw_out_addr,
 #        vgw_out_addr = vgw_out_addr
 #    ))
-    sys.stdout = open('ipsec.conf.txt', 'w+')
+    sys.stdout = open('ipsec.conf.txt', 'a')
     print('\n#\n# ipsec.conf/freswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
     print(templateips.render(
     cgw_in_addr = cgw_in_addr,
@@ -145,7 +145,7 @@ for tun in tunnels:
 #        dpd_delay = int(dpd_delay),
 #        dpdtimeout = int(dpd_retry)*int(dpd_delay)
 #    ))
-    sys.stdout = open('ipsec_conf.txt', 'w+')
+    sys.stdout = open('ipsec_conf.txt', 'a')
     print('\n#\n# ipsec.conf/strongswan - {0} tunnel {1}\n#'.format(profile.title(), tnum))
     print(templatefsw.render(
     tnum = tnum,
@@ -170,7 +170,7 @@ for tun in tunnels:
 #        vgw_in_addr = vgw_in_addr,
 #        vgw_bgp_asn = vgw_bgp_asn
 #    ))
-    sys.stdout = open('bgpd.conf.txt', 'w+')
+    sys.stdout = open('bgpd.conf.txt', 'a')
     print('\n#\n# bgpd.conf/quagga - {0} tunnel {1}\n#'.format(profile.title(), tnum))
     print(templatequa.render(
     tnum = tnum,
