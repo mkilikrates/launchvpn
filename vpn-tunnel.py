@@ -18,10 +18,12 @@ tunnels = d['vpn_connection']['ipsec_tunnel']
 
 with open('racoon_conf.tmpl') as f:
     racoon_conf = f.read()
-with open('ipsec_conf.tmpl') as f:
-    ipsec_conf = f.read()
+with open('ipsec_tools_conf.tmpl') as f:
+    ipsec_tools_conf = f.read()
 with open('ipsec_conf_fsw.tmpl') as f:
     ipsec_conf_fsw = f.read()
+with open('ipsec_conf_osw.tmpl') as f:
+    ipsec_conf_osw = f.read()
 with open('bgpd_conf.tmpl') as f:
     bgpd_conf = f.read()
 sys.stdout = open('psk.txt', 'w')
@@ -30,6 +32,8 @@ sys.stdout = open('ipsec.secrets.txt', 'w')
 print('\n#\n# ipsec.secrets\n')
 sys.stdout = open('racoon.conf.txt', 'w')
 print('\n#\n# racoon.conf\n')
+sys.stdout = open('ipsec-tools.conf.txt', 'w')
+print('\n#\n# ipsec-tools.conf\n')
 sys.stdout = open('ipsec.conf.txt', 'w')
 print('\n#\n# ipsec.conf/freswan\n')
 sys.stdout = open('ipsec_conf.txt', 'w')
@@ -39,8 +43,9 @@ print('\n!\n! bgpd.conf/quagga\n')
 
 tnum = 1
 templaterac = Template(racoon_conf)
-templateips = Template(ipsec_conf)
+templateips = Template(ipsec_tools_conf)
 templatefsw = Template(ipsec_conf_fsw)
+templatefsw = Template(ipsec_conf_osw)
 templatequa = Template(bgpd_conf)
 for tun in tunnels:
     cgw_out_addr = tun['customer_gateway']['tunnel_outside_address']['ip_address']
@@ -97,7 +102,7 @@ for tun in tunnels:
     ipsec_authentication_protocol = '_'.join(ipsec_authentication_protocol.split('-')[:2]),
     ipsec_lifetime = ipsec_lifetime
         ))
-    sys.stdout = open('ipsec.conf.txt', 'a')
+    sys.stdout = open('ipsec-tools.conf.txt', 'a')
     print('#tunnel#{0}\n'.format(tnum))
     print(templateips.render(
     cgw_in_addr = cgw_in_addr,
@@ -123,6 +128,25 @@ for tun in tunnels:
     ipsec_encryption_protocol = ipsec_encryption_protocol,
     ipsec_authentication_protocol = (ipsec_authentication_protocol.split('-')[1]),
     ipsec_lifetime = int(ipsec_lifetime)/3600,
+    dpd_delay = int(dpd_delay),
+    dpdtimeout = int(dpd_retry)*int(dpd_delay)
+        ))
+    sys.stdout = open('ipsec.conf.txt', 'a')
+    print('#tunnel#{0}\n'.format(tnum))
+    print(templatefow.render(
+    tnum = tnum,
+    cgw_out_addr = cgw_out_addr,
+    vgw_out_addr = vgw_out_addr,
+    cgw_in_addr = cgw_in_addr,
+    cgw_in_cidr = cgw_in_cidr,
+    vgw_in_addr = vgw_in_addr,
+    vgw_in_cidr = vgw_in_cidr,
+    ike_encryption_protocol = ike_encryption_protocol,
+    ike_authentication_protocol = ike_authentication_protocol,
+    ike_lifetime = ike_lifetime,
+    ipsec_encryption_protocol = ipsec_encryption_protocol,
+    ipsec_authentication_protocol = (ipsec_authentication_protocol.split('-')[1]),
+    ipsec_lifetime = ipsec_lifetime,
     dpd_delay = int(dpd_delay),
     dpdtimeout = int(dpd_retry)*int(dpd_delay)
         ))
