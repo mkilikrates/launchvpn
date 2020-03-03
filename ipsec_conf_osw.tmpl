@@ -13,8 +13,8 @@ conn {{ vgw_out_addr }}
     phase2alg={{ ipsec_encryption_protocol }}-{{ ipsec_authentication_protocol }};modp1024
     lifetime={{ ipsec_lifetime }}s
     keyingtries=%forever
-    leftsubnet=%any
-    rightsubnet=%any
+    leftsubnet=0.0.0.0/0
+    rightsubnet=0.0.0.0/0
     dpddelay={{ dpd_delay }}
     dpdtimeout={{ dpdtimeout }}
     dpdaction=restart
