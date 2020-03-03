@@ -45,7 +45,7 @@ tnum = 1
 templaterac = Template(racoon_conf)
 templateips = Template(ipsec_tools_conf)
 templatefsw = Template(ipsec_conf_fsw)
-templatefsw = Template(ipsec_conf_osw)
+templateosw = Template(ipsec_conf_osw)
 templatequa = Template(bgpd_conf)
 for tun in tunnels:
     cgw_out_addr = tun['customer_gateway']['tunnel_outside_address']['ip_address']
@@ -133,7 +133,7 @@ for tun in tunnels:
         ))
     sys.stdout = open('ipsec.conf.txt', 'a')
     print('#tunnel#{0}\n'.format(tnum))
-    print(templatefow.render(
+    print(templateosw.render(
     tnum = tnum,
     cgw_out_addr = cgw_out_addr,
     vgw_out_addr = vgw_out_addr,
