@@ -21,5 +21,8 @@ conn {{ vgw_out_addr }}
     mark={{ tnum }}/0xffffffff
     rekeymargin=540s
     rekeyfuzz=100%
-    leftupdown="/etc/ipsec.d/aws-updown.sh -ln Tunnel{{ tnum }} -ll {{ cgw_in_addr }}/{{ cgw_in_cidr }} -lr {{ vgw_in_addr }}/{{ vgw_in_cidr }} -m {{ tnum }}00"
+    vti-interface=Tunnel{{ tnum }}
+    leftvti={{ cgw_in_addr }}/{{ cgw_in_cidr }}
+    vti-routing=yes
+#    leftupdown="/etc/ipsec.d/aws-updown.sh -ln Tunnel{{ tnum }} -ll {{ cgw_in_addr }}/{{ cgw_in_cidr }} -lr {{ vgw_in_addr }}/{{ vgw_in_cidr }} -m {{ tnum }}00"
 
