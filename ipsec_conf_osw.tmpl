@@ -23,5 +23,5 @@ conn {{ vgw_out_addr }}
     wx_esp_replay_window=1024
     rekeymargin=540s
     rekeyfuzz=100%
-    leftupdown="/etc/strongswan/ipsec.d/aws-updown.sh -ln Tunnel{{ tnum }} -ll {{ cgw_in_addr }}/{{ cgw_in_cidr }} -lr {{ vgw_in_addr }}/{{ vgw_in_cidr }} -m {{ tnum }}00"
+    leftupdown="/etc/ipsec.d/aws-updown.sh -ln Tunnel{{ tnum }} -ll {{ cgw_in_addr }}/{{ cgw_in_cidr }} -lr {{ vgw_in_addr }}/{{ vgw_in_cidr }} -m {{ tnum }}00"
 
