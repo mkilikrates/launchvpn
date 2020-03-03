@@ -2,6 +2,5 @@
 router bgp {{ cgw_bgp_asn }}
 {% endif %}
  neighbor {{ vgw_in_addr }} remote-as {{ vgw_bgp_asn }}
- neighbor {{ vgw_in_addr }} ebgp-multihop
  neighbor {{ vgw_in_addr }} next-hop-self
 !

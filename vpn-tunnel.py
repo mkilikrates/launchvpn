@@ -5,11 +5,17 @@ import xmltodict
 from jinja2 import Template
 
 profile = sys.argv[1]
+vpnid = sys.argv[2]
 
 s = boto3.Session(profile_name=profile)
 ec2 = s.client('ec2')
 
-vpn = ec2.describe_vpn_connections()
+vpn = ec2.describe_vpn_connections(
+    VpnConnectionIds=[
+        vpnid,
+    ]
+)
+
 x = vpn['VpnConnections'][0]['CustomerGatewayConfiguration']
 
 d = xmltodict.parse(x)
