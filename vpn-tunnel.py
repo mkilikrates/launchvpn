@@ -6,6 +6,7 @@ from jinja2 import Template
 
 profile = sys.argv[1]
 vpnid = sys.argv[2]
+routing = sys.argv[3]
 
 s = boto3.Session(profile_name=profile)
 ec2 = s.client('ec2')
@@ -44,8 +45,9 @@ sys.stdout = open('ipsec.conf.txt', 'w')
 print('\n#\n# ipsec.conf/freswan\n')
 sys.stdout = open('ipsec_conf.txt', 'w')
 print('\n#\n# ipsec.conf/strongswan\n')
-sys.stdout = open('bgpd.conf.txt', 'w')
-print('\n!\n! bgpd.conf/quagga\n')
+if routing != 'static':
+    sys.stdout = open('bgpd.conf.txt', 'w')
+    print('\n!\n! bgpd.conf/quagga\n')
 
 tnum = 1
 templaterac = Template(racoon_conf)
@@ -53,17 +55,19 @@ templateips = Template(ipsec_tools_conf)
 templatefsw = Template(ipsec_conf_fsw)
 templateosw = Template(ipsec_conf_osw)
 templatequa = Template(bgpd_conf)
+
 for tun in tunnels:
     cgw_out_addr = tun['customer_gateway']['tunnel_outside_address']['ip_address']
     cgw_in_addr = tun['customer_gateway']['tunnel_inside_address']['ip_address']
     cgw_in_cidr = tun['customer_gateway']['tunnel_inside_address']['network_cidr']
-    cgw_bgp_asn = tun['customer_gateway']['bgp']['asn']
-    cgw_bgp_ht = tun['customer_gateway']['bgp']['hold_time']
+    if routing != 'static':
+        cgw_bgp_asn = tun['customer_gateway']['bgp']['asn']
+        cgw_bgp_ht = tun['customer_gateway']['bgp']['hold_time']
+        vgw_bgp_asn = tun['vpn_gateway']['bgp']['asn']
+        vgw_bgp_ht = tun['vpn_gateway']['bgp']['hold_time']
     vgw_out_addr = tun['vpn_gateway']['tunnel_outside_address']['ip_address']
     vgw_in_addr = tun['vpn_gateway']['tunnel_inside_address']['ip_address']
     vgw_in_cidr = tun['vpn_gateway']['tunnel_inside_address']['network_cidr']
-    vgw_bgp_asn = tun['vpn_gateway']['bgp']['asn']
-    vgw_bgp_ht = tun['vpn_gateway']['bgp']['hold_time']
     ike_authentication_protocol = tun['ike']['authentication_protocol']
     ike_encryption_protocol = ''.join(tun['ike']['encryption_protocol'].split('-')[:2])
     ike_lifetime = tun['ike']['lifetime']
@@ -156,15 +160,16 @@ for tun in tunnels:
     dpd_delay = int(dpd_delay),
     dpdtimeout = int(dpd_retry)*int(dpd_delay)
         ))
-    sys.stdout = open('bgpd.conf.txt', 'a')
-    print('! tunnel #{0}\n'.format(tnum))
-    print(templatequa.render(
-    tnum = tnum,
-    cgw_bgp_asn = cgw_bgp_asn,
-    vgw_in_addr = vgw_in_addr,
-    vgw_bgp_asn = vgw_bgp_asn
-        ))
-    print('\n')
+    if routing != 'static':
+        sys.stdout = open('bgpd.conf.txt', 'a')
+        print('! tunnel #{0}\n'.format(tnum))
+        print(templatequa.render(
+        tnum = tnum,
+        cgw_bgp_asn = cgw_bgp_asn,
+        vgw_in_addr = vgw_in_addr,
+        vgw_bgp_asn = vgw_bgp_asn
+            ))
+        print('\n')
     tnum += 1
 f.close()
 
