@@ -18,7 +18,7 @@ while [[ $# > 1 ]]; do
 			shift
 			;;
 		-m|--mark)
-			TUNNEL_MARK="${2}"
+			TUNNEL_MARK="${2%/*}"
 			shift
 			;;
 		-r|--static-route)
