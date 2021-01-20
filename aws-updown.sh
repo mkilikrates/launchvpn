@@ -15,6 +15,7 @@ while [[ $# > 1 ]]; do
 		-lr|--link-remote)
 			TUNNEL_REMOTE_ADDRESS="${2}"
 			TUNNEL_REMOTE_ENDPOINT="${PLUTO_PEER}"
+			REMOTE_IP=${TUNNEL_REMOTE_ADDRESS::-3}
 			shift
 			;;
 		-m|--mark)
@@ -60,6 +61,19 @@ add_route() {
 	ip route flush table 220
 }
 
+add_monitor() {
+	echo "Starting monitor!!"
+	ping -i 10 ${REMOTE_IP} &> /dev/null &
+	echo $! >/var/run/${REMOTE_IP}.pid
+	echo "Monitor started!!"
+}
+
+del_monitor() {
+	echo "Removing monitor!!"
+	if [ -f "/var/run/${REMOTE_IP}.pid" ]; then kill -9 $(cat /var/run/${REMOTE_IP}.pid); fi
+	echo "Monitor removed!!"
+}
+
 cleanup() {
         IFS=',' read -ra route <<< "${TUNNEL_STATIC_ROUTE}"
         for i in "${route[@]}"; do
@@ -86,9 +100,11 @@ case "${PLUTO_VERB}" in
 		create_interface
 		configure_sysctl
 		add_route
+		add_monitor
 		;;
 	down-client)
 		cleanup
 		delete_interface
+		del_monitor
 		;;
 esac
