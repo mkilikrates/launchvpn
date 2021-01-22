@@ -1,10 +1,11 @@
 {% if tnum == 1 %}
 path pre_shared_key "/usr/local/etc/racoon/psk.txt";
-log debug;
+log error;
 padding
 {
+	randomize_length on;
 	maximum_length 20;	# maximum padding length.
-	randomize off;		# enable randomize length.
+	randomize on;		# enable randomize length.
 	strict_check off;	# enable strict check.
 	exclusive_tail off;	# extract last one octet.
 }
@@ -28,6 +29,8 @@ listen
 {% if mylocalip == "" %}
 	isakmp {{ cgw_out_addr }} [500];
 {% endif %}
+	strict_address;
+	adminsock disabled;
 }
 {% endif %}
 remote {{ vgw_out_addr }} {
@@ -41,9 +44,13 @@ remote {{ vgw_out_addr }} {
 	peers_identifier address {{ vgw_out_addr }};
 	lifetime time {{ ike_lifetime }} seconds;
 	passive off;
-	proposal_check obey;
+	proposal_check strict;
 	nat_traversal on;
 	generate_policy off;
+	ike_frag off;
+	passive off;
+	support_proxy on;
+	ph1id {{ tnum }};
 	proposal {
 		encryption_algorithm {{ ike_encryption_protocol }};
 		hash_algorithm {{ ike_authentication_protocol }};
@@ -59,5 +66,6 @@ sainfo address {{ cgw_in_addr }}/{{ cgw_in_cidr }} any address {{ vgw_in_addr }}
 	encryption_algorithm {{ ipsec_encryption_protocol }};
 	authentication_algorithm {{ ipsec_authentication_protocol }};
 	compression_algorithm deflate;
+	remoteid {{ tnum }};
 }
 
