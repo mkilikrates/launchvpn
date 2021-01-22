@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import sys
 import boto3
 import xmltodict
@@ -7,6 +8,9 @@ from jinja2 import Template
 profile = sys.argv[1]
 vpnid = sys.argv[2]
 routing = sys.argv[3]
+mylocalip = os.environ.get("myip","")
+localcidr = os.environ.get("mylocalcidr","")
+remotecidr = os.environ.get("myremotecidr","")
 
 s = boto3.Session(profile_name=profile)
 ec2 = s.client('ec2')
@@ -94,6 +98,7 @@ for tun in tunnels:
     sys.stdout = open('racoon.conf.txt', 'a')
     print('#tunnel#{0}\n'.format(tnum))
     print(templaterac.render(
+    tnum = tnum,
     vgw_out_addr = vgw_out_addr,
     ike_mode = ike_mode,
     ike_lifetime = ike_lifetime,
@@ -106,6 +111,7 @@ for tun in tunnels:
     cgw_in_cidr = cgw_in_cidr,
     vgw_in_addr = vgw_in_addr,
     vgw_in_cidr = vgw_in_cidr,
+    mylocalip = mylocalip,
     cgw_out_addr = cgw_out_addr,
     ipsec_perfect_forward_secrecy = ipsec_perfect_forward_secrecy,
     ipsec_encryption_protocol = ipsec_encryption_protocol,
@@ -113,12 +119,15 @@ for tun in tunnels:
     ipsec_lifetime = ipsec_lifetime
         ))
     sys.stdout = open('ipsec-tools.conf.txt', 'a')
-    print('#tunnel#{0}\n'.format(tnum))
     print(templateips.render(
+    tnum = tnum,
+    localcidr = localcidr,
+    remotecidr = remotecidr,
     cgw_in_addr = cgw_in_addr,
     cgw_in_cidr = cgw_in_cidr,
     vgw_in_addr = vgw_in_addr,
     vgw_in_cidr = vgw_in_cidr,
+    mylocalip = mylocalip,
     cgw_out_addr = cgw_out_addr,
     vgw_out_addr = vgw_out_addr
         ))
