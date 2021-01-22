@@ -37,14 +37,10 @@ with open('ipsec_conf_osw.tmpl') as f:
     ipsec_conf_osw = f.read()
 with open('bgpd_conf.tmpl') as f:
     bgpd_conf = f.read()
-sys.stdout = open('psk.txt', 'w')
-print('\n#\n# psk.txt\n')
+with open('rc_conf.tmpl') as f:
+    rc_conf = f.read()
 sys.stdout = open('ipsec.secrets.txt', 'w')
 print('\n#\n# ipsec.secrets\n')
-sys.stdout = open('racoon.conf.txt', 'w')
-print('\n#\n# racoon.conf\n')
-sys.stdout = open('ipsec-tools.conf.txt', 'w')
-print('\n#\n# ipsec-tools.conf\n')
 sys.stdout = open('ipsec.conf.txt', 'w')
 print('\n#\n# ipsec.conf/freswan\n')
 sys.stdout = open('ipsec_conf.txt', 'w')
@@ -52,13 +48,13 @@ print('\n#\n# ipsec.conf/strongswan\n')
 if routing != 'static':
     sys.stdout = open('bgpd.conf.txt', 'w')
     print('\n!\n! bgpd.conf/quagga\n')
-
 tnum = 1
 templaterac = Template(racoon_conf)
 templateips = Template(ipsec_tools_conf)
 templatefsw = Template(ipsec_conf_fsw)
 templateosw = Template(ipsec_conf_osw)
 templatequa = Template(bgpd_conf)
+templaterc = Template(rc_conf)
 
 for tun in tunnels:
     cgw_out_addr = tun['customer_gateway']['tunnel_outside_address']['ip_address']
@@ -90,13 +86,10 @@ for tun in tunnels:
     dpd_delay = tun['ipsec']['dead_peer_detection']['interval']
     dpd_retry = tun['ipsec']['dead_peer_detection']['retries']
     sys.stdout = open('psk.txt', 'a')
-    print('\n#tunnel#{0}\n'.format(tnum))
     print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key))
     sys.stdout = open('ipsec.secrets.txt', 'a')
-    print('#tunnel#{0}\n'.format(tnum))
     print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key))
     sys.stdout = open('racoon.conf.txt', 'a')
-    print('#tunnel#{0}\n'.format(tnum))
     print(templaterac.render(
     tnum = tnum,
     vgw_out_addr = vgw_out_addr,
@@ -168,6 +161,15 @@ for tun in tunnels:
     ipsec_lifetime = ipsec_lifetime,
     dpd_delay = int(dpd_delay),
     dpdtimeout = int(dpd_retry)*int(dpd_delay)
+        ))
+    sys.stdout = open('rcconf.conf.txt', 'a')
+    print(templaterc.render(
+    tnum = tnum,
+    cgw_in_addr = cgw_in_addr,
+    vgw_in_addr = vgw_in_addr,
+    mylocalip = mylocalip,
+    cgw_out_addr = cgw_out_addr,
+    vgw_out_addr = vgw_out_addr
         ))
     if routing != 'static':
         sys.stdout = open('bgpd.conf.txt', 'a')
