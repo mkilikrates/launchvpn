@@ -78,9 +78,9 @@ for tun in tunnels:
     dpd_retry = tun['ipsec']['dead_peer_detection']['retries']
     sys.stdout = open('psk.txt', 'a')
     print('{1}\t{2}'.format(profile.title(), vgw_out_addr, ike_pre_shared_key))
-    sys.stdout = open('ipsec.secrets.txt', 'w')
+    sys.stdout = open('ipsec.secrets.txt', 'a')
     print('{1} {2} : PSK "{3}"'.format(profile.title(), cgw_out_addr, vgw_out_addr, ike_pre_shared_key))
-    sys.stdout = open('racoon.conf.txt', 'w')
+    sys.stdout = open('racoon.conf.txt', 'a')
     print(templaterac.render(
     tnum = tnum,
     vgw_out_addr = vgw_out_addr,
@@ -102,7 +102,7 @@ for tun in tunnels:
     ipsec_authentication_protocol = '_'.join(ipsec_authentication_protocol.split('-')[:2]),
     ipsec_lifetime = ipsec_lifetime
         ))
-    sys.stdout = open('ipsec-tools.conf.txt', 'w')
+    sys.stdout = open('ipsec-tools.conf.txt', 'a')
     print(templateips.render(
     tnum = tnum,
     localcidr = localcidr,
@@ -115,7 +115,7 @@ for tun in tunnels:
     cgw_out_addr = cgw_out_addr,
     vgw_out_addr = vgw_out_addr
         ))
-    sys.stdout = open('ipsec_conf.txt', 'w')
+    sys.stdout = open('ipsec_conf.txt', 'a')
     print('#tunnel#{0}\n'.format(tnum))
     print(templatefsw.render(
     tnum = tnum,
@@ -134,7 +134,7 @@ for tun in tunnels:
     dpd_delay = int(dpd_delay),
     dpdtimeout = int(dpd_retry)*int(dpd_delay)
         ))
-    sys.stdout = open('ipsec.conf.txt', 'w')
+    sys.stdout = open('ipsec.conf.txt', 'a')
     print('#tunnel#{0}\n'.format(tnum))
     print(templateosw.render(
     tnum = tnum,
@@ -153,7 +153,7 @@ for tun in tunnels:
     dpd_delay = int(dpd_delay),
     dpdtimeout = int(dpd_retry)*int(dpd_delay)
         ))
-    sys.stdout = open('rcconf.conf.txt', 'w')
+    sys.stdout = open('rcconf.conf.txt', 'a')
     print(templaterc.render(
     tnum = tnum,
     cgw_in_addr = cgw_in_addr,
@@ -163,7 +163,7 @@ for tun in tunnels:
     vgw_out_addr = vgw_out_addr
         ))
     if routing != 'static':
-        sys.stdout = open('bgpd.conf.txt', 'w')
+        sys.stdout = open('bgpd.conf.txt', 'a')
         print('! tunnel #{0}\n'.format(tnum))
         print(templatequa.render(
         tnum = tnum,
